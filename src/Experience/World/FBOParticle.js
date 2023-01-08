@@ -18,10 +18,13 @@ export default class FBOParticle
         
         this.resource = this.resources.items.catModel
 
+        this.mouse = new THREE.Vector2();
+
         this.uniforms = {};
         this.width = 32;
         this.setMesh()
         this.iniGPGPU()
+        this.setMouse()
        // console.log('fboHi')
         this.time = 0;
     }
@@ -95,7 +98,7 @@ export default class FBOParticle
         this.dtAcceleration = this.gpuCompute.createTexture()
         this.fillAcc(this.dtAcceleration);
 
-        console.log(this.dtAcceleration)
+       // console.log(this.dtAcceleration)
     
         this.positionVariable = this.gpuCompute.addVariable('texturePosition', fragmentPos, this.dtPosition)
         this.positionVariable.material.uniforms['timer'] = {value:0}
@@ -207,6 +210,20 @@ export default class FBOParticle
         this.positionVariable.material.uniforms['timer'].value = this.time;
        // this.velocityVariable.material.uniforms['force'].value = new THREE.Vector3(0.0,-0.01,0.0);
     }
+
+    setMouse()
+    {
+       window.addEventListener('mousemove',(event)=>{
+
+            this.mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+            this.mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+        
+           // console.log(this.mouse.x, this.mouse.y)
+        })
+
+    }
+
+    
 }
 
 
